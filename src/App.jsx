@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CommentForm from "./components/CommentForm";
-import CommentList from "./components/CommentList";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Comment from "./components/Comment";
 
