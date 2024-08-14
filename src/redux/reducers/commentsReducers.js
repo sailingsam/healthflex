@@ -1,5 +1,6 @@
 const initialState = {
   comments: [],
+  sort: "asc",
 };
 
 const commentsReducer = (state = initialState, action) => {
@@ -64,6 +65,8 @@ const commentsReducer = (state = initialState, action) => {
             : comment
         ),
       };
+    case "TOGGLE_SORT":
+      return { ...state, sort: state.sort === "asc" ? "desc" : "asc" };
     default:
       return state;
   }
