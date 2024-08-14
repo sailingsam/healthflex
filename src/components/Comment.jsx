@@ -19,7 +19,7 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
       onReply({
         name: replyName,
         comment: replyComment,
-        date: new Date().toLocaleDateString(),
+        date: new Date().toLocaleString(),
       });
       setReplyName("");
       setReplyComment("");
