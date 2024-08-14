@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
 
-function Reply({ name, reply, date, onDelete }) {
+function Reply({commentIndex, replyIndex, name, reply, date, onDelete }) {
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [newReply, setNewReply] = useState(reply);
 
   const handleEdit = () => {
+    if (isEditing) {
+      dispatch({ type: 'EDIT_REPLY', payload: { commentIndex, replyIndex, newReply } });
+    }
     setIsEditing(!isEditing);
   };
 

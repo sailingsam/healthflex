@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import Reply from "./Reply";
+import { useDispatch } from "react-redux";
 
-function Comment({ name, comment, date, replies, onReply, onDelete }) {
+function Comment({ name, index, comment, date, replies, onReply, onDelete }) {
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState(comment);
   const [showReplyForm, setShowReplyForm] = useState(false);
@@ -10,6 +12,9 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
   const [replyComment, setReplyComment] = useState("");
 
   const handleEdit = () => {
+    if (isEditing) {
+      dispatch({ type: 'EDIT_COMMENT', payload: { index, newComment } });
+    }
     setIsEditing(!isEditing);
   };
 
@@ -105,9 +110,11 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
 
       {/* Display Replies */}
       {replies &&
-        replies.map((reply, index) => (
+        replies.map((reply, replyIndex) => (
           <Reply
             key={index}
+            replyIndex={replyIndex}
+            commentIndex={index}
             name={reply.name}
             reply={reply.comment}
             date={reply.date}

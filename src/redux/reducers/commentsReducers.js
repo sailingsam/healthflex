@@ -5,6 +5,31 @@ const initialState = {
 
 const commentsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "EDIT_COMMENT":
+      return {
+        ...state,
+        comments: state.comments.map((comment, index) =>
+          index === action.payload.index
+            ? { ...comment, comment: action.payload.newComment }
+            : comment
+        ),
+      };
+    case "EDIT_REPLY":
+      return {
+        ...state,
+        comments: state.comments.map((comment, index) =>
+          index === action.payload.commentIndex
+            ? {
+                ...comment,
+                replies: comment.replies.map((reply, replyIndex) =>
+                  replyIndex === action.payload.replyIndex
+                    ? { ...reply, reply: action.payload.newReply }
+                    : reply
+                ),
+              }
+            : comment
+        ),
+      };
     case "SET_COMMENTS":
       return { ...state, comments: action.payload };
     case "ADD_COMMENT":

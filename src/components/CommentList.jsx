@@ -7,6 +7,7 @@ function CommentList({ comments, onReply, onDelete }) {
       {comments.map((comment, index) => (
         <Comment 
           key={index} 
+          index={index}
           {...comment} 
           onReply={(reply) => onReply(index, reply)} 
           onDelete={(reply, isReply) => {
