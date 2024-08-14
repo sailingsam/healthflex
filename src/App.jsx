@@ -69,7 +69,7 @@ function App() {
         </div>
       </div>
       {sortedComments.map((comment, index) => (
-        <Comment
+        <Comment 
           key={index}
           index={index}
           comment={comment}
