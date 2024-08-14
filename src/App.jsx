@@ -40,18 +40,21 @@ function App() {
     }
   };
 
-  const sortedComments = [...comments].map(comment => {
-    const sortedReplies = [...comment.replies].sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return sort === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-    return { ...comment, replies: sortedReplies };
-  }).sort((a, b) => {
+  const sortedComments = [...comments]
+  .sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return sort === 'asc' ? dateA - dateB : dateB - dateA;
-  });
+  })
+  .map(comment => ({
+    ...comment,
+    replies: [...comment.replies].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sort === 'asc' ? dateA - dateB : dateB - dateA;
+    })
+  }));
+
 
   return (
     <div className="max-w-xl mx-auto p-4 flex flex-col">
