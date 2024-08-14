@@ -11,7 +11,6 @@ function CommentList({ comments, onReply, onDelete }) {
           onReply={(reply) => onReply(index, reply)} 
           onDelete={(reply, isReply) => {
             if (isReply) {
-              // Find the index of the reply to delete
               const replyIndex = comments[index].replies.findIndex(r => r === reply);
               onDelete(index, true, replyIndex);
             } else {

@@ -7,23 +7,25 @@ function App() {
   const [comments, setComments] = useState([]);
   const [sort, setSort] = useState("asc");
 
+  // local storage se comment fetch krenge yha
   useEffect(() => {
-    // Load comments from localStorage when the component mounts
     const savedComments = localStorage.getItem("comments");
     if (savedComments) {
       setComments(JSON.parse(savedComments));
     }
   }, []);
 
+  //local storeage me comment save krenge yha
   useEffect(() => {
-    // Save comments to localStorage whenever comments state changes
     localStorage.setItem("comments", JSON.stringify(comments));
   }, [comments]);
 
+  // sort krne ke liye
   const toggleSort = () => {
     setSort(sort === "asc" ? "desc" : "asc");
   };
 
+  // comment add krne ke liye
   const handleAddComment = (comment) => {
     setComments((prevComments) => [
       ...prevComments,
@@ -31,6 +33,7 @@ function App() {
     ]);
   };
 
+  // reply add krne ke liye
   const handleReply = (commentIndex, reply) => {
     setComments((prevComments) => {
       const updatedComments = [...prevComments];
@@ -39,6 +42,7 @@ function App() {
     });
   };
 
+  // comment ya reply delete krne ke liye
   const handleDelete = (commentIndex, isReply = false, replyIndex = null) => {
     setComments((prevComments) => {
       const updatedComments = [...prevComments];
@@ -53,7 +57,15 @@ function App() {
     });
   };
 
-  const sortedComments = [...comments].sort((a, b) => {
+  // comment or unke replies sort krne ke liye
+  const sortedComments = [...comments].map(comment => {
+    const sortedReplies = [...comment.replies].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sort === "asc" ? dateA - dateB : dateB - dateA;
+    });
+    return { ...comment, replies: sortedReplies };
+  }).sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     return sort === "asc" ? dateA - dateB : dateB - dateA;
