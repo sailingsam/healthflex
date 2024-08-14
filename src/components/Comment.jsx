@@ -28,7 +28,7 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
   };
 
   return (
-    <div className="">
+    <div className="my-5">
       <div className="border px-4 py-1 mb-2 bg-gray-100 relative rounded-sm">
         <div className="flex justify-between">
           <div>

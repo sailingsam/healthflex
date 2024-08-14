@@ -10,7 +10,7 @@ function Reply({ name, reply, date, onDelete }) {
   };
 
   return (
-    <div className="ml-10 border px-4 py-1 mb-2 bg-gray-200 relative rounded-sm">
+    <div className="ml-10 border px-4 py-1 mb-2 bg-gray-100 relative rounded-sm">
       <div className="flex justify-between">
         <div>
           <strong>{name}</strong>
