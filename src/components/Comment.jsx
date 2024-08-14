@@ -28,7 +28,7 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
   };
 
   return (
-    <div className="my-5">
+    <div className="">
       <div className="border px-4 py-1 mb-2 bg-gray-100 relative rounded-sm">
         <div className="flex justify-between">
           <div>
@@ -61,7 +61,7 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
         </button>
         <button
           className="absolute right-[-12px] top-1/2 transform -translate-y-1/2 rounded-full p-1 bg-gray-600 text-white"
-          onClick={onDelete}
+          onClick={() => onDelete(null, false)}
         >
           <MdDelete />
         </button>
@@ -106,7 +106,7 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
             name={reply.name}
             reply={reply.comment}
             date={reply.date}
-            onDelete={() => onDelete(reply, true)}
+            onDelete={() => onDelete(reply, true, index)}
           />
         ))}
     </div>

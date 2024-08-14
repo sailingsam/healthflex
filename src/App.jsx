@@ -15,13 +15,17 @@ function App() {
     setComments(updatedComments);
   };
 
-  const handleDelete = (commentIndex, isReply, replyIndex = null) => {
+  const handleDelete = (commentIndex, isReply = false, replyIndex = null) => {
     const updatedComments = [...comments];
+    
     if (isReply && replyIndex !== null) {
+      // Delete the specific reply
       updatedComments[commentIndex].replies.splice(replyIndex, 1);
     } else {
+      // Delete the whole comment
       updatedComments.splice(commentIndex, 1);
     }
+    
     setComments(updatedComments);
   };
 

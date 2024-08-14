@@ -5,14 +5,19 @@ function CommentList({ comments, onReply, onDelete }) {
   return (
     <div>
       {comments.map((comment, index) => (
-        <Comment
-          key={index}
-          name={comment.name}
-          comment={comment.comment}
-          date={comment.date}
-          replies={comment.replies}
-          onReply={(reply) => onReply(index, reply)}
-          onDelete={() => onDelete(index, false)}
+        <Comment 
+          key={index} 
+          {...comment} 
+          onReply={(reply) => onReply(index, reply)} 
+          onDelete={(reply, isReply) => {
+            if (isReply) {
+              // Find the index of the reply to delete
+              const replyIndex = comments[index].replies.findIndex(r => r === reply);
+              onDelete(index, true, replyIndex);
+            } else {
+              onDelete(index);
+            }
+          }}
         />
       ))}
     </div>
