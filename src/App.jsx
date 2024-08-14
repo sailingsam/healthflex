@@ -1,74 +1,56 @@
-import React, { useState, useEffect } from "react";
-import CommentForm from "./components/CommentForm";
-import CommentList from "./components/CommentList";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import CommentForm from './components/CommentForm';
+import CommentList from './components/CommentList';
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 function App() {
-  const [comments, setComments] = useState([]);
-  const [sort, setSort] = useState("asc");
+  const dispatch = useDispatch();
+  const comments = useSelector(state => state.comments.comments);
+  const sort = useSelector(state => state.comments.sort);
 
-  // local storage se comment fetch krenge yha
   useEffect(() => {
-    const savedComments = localStorage.getItem("comments");
+    const savedComments = localStorage.getItem('comments');
     if (savedComments) {
-      setComments(JSON.parse(savedComments));
+      dispatch({ type: 'SET_COMMENTS', payload: JSON.parse(savedComments) });
     }
-  }, []);
+  }, [dispatch]);
 
-  //local storeage me comment save krenge yha
   useEffect(() => {
-    localStorage.setItem("comments", JSON.stringify(comments));
+    localStorage.setItem('comments', JSON.stringify(comments));
   }, [comments]);
 
-  // sort krne ke liye
   const toggleSort = () => {
-    setSort(sort === "asc" ? "desc" : "asc");
+    dispatch({ type: 'TOGGLE_SORT' });
   };
 
-  // comment add krne ke liye
   const handleAddComment = (comment) => {
-    setComments((prevComments) => [
-      ...prevComments,
-      { ...comment, date: new Date().toLocaleString(), replies: [] },
-    ]);
+    dispatch({ type: 'ADD_COMMENT', payload: { ...comment, date: new Date().toLocaleString(), replies: [] } });
   };
 
-  // reply add krne ke liye
   const handleReply = (commentIndex, reply) => {
-    setComments((prevComments) => {
-      const updatedComments = [...prevComments];
-      updatedComments[commentIndex].replies.push(reply);
-      return updatedComments;
-    });
+    dispatch({ type: 'ADD_REPLY', payload: { commentIndex, reply } });
   };
 
-  // comment ya reply delete krne ke liye
   const handleDelete = (commentIndex, isReply = false, replyIndex = null) => {
-    setComments((prevComments) => {
-      const updatedComments = [...prevComments];
-
-      if (isReply && replyIndex !== null) {
-        updatedComments[commentIndex].replies.splice(replyIndex, 1);
-      } else {
-        updatedComments.splice(commentIndex, 1);
-      }
-
-      return updatedComments;
-    });
+    if (isReply && replyIndex !== null) {
+      dispatch({ type: 'DELETE_REPLY', payload: { commentIndex, replyIndex } });
+    } else {
+      dispatch({ type: 'DELETE_COMMENT', payload: commentIndex });
+    }
   };
 
-  // comment or unke replies sort krne ke liye
   const sortedComments = [...comments].map(comment => {
     const sortedReplies = [...comment.replies].sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
-      return sort === "asc" ? dateA - dateB : dateB - dateA;
+      return sort === 'asc' ? dateA - dateB : dateB - dateA;
     });
     return { ...comment, replies: sortedReplies };
   }).sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
-    return sort === "asc" ? dateA - dateB : dateB - dateA;
+    return sort === 'asc' ? dateA - dateB : dateB - dateA;
   });
 
   return (
@@ -77,7 +59,7 @@ function App() {
       <div className="w-full flex justify-end mt-2 font-semibold text-sm">
         <div className="hover:cursor-pointer" onClick={toggleSort}>
           <span className="mr-3">Sort By: Date & Time</span>
-          <button>{sort === "asc" ? <FaArrowUp /> : <FaArrowDown />}</button>
+          <button>{sort === 'asc' ? <FaArrowUp /> : <FaArrowDown />}</button>
         </div>
       </div>
       <CommentList
