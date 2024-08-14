@@ -15,6 +15,11 @@ function Comment({ name, comment, date, replies, onReply, onDelete }) {
 
   const handleReplySubmit = (e) => {
     e.preventDefault();
+    if (!replyName.trim() || !replyComment.trim()) {
+      alert("Both name and reply are required.");
+      return;
+    }
+
     if (replyName.trim() && replyComment.trim()) {
       onReply({
         name: replyName,

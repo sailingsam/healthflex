@@ -6,9 +6,11 @@ function CommentForm({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim() && comment.trim()) {
-      onSubmit({ name, comment });
+    if (!name.trim() || !comment.trim()) {
+      alert("Both name and comment are required.");
+      return;
     }
+    onSubmit({ name, comment });
   };
 
   return (
