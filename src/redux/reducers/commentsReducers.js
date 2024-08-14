@@ -23,7 +23,7 @@ const commentsReducer = (state = initialState, action) => {
                 ...comment,
                 replies: comment.replies.map((reply, replyIndex) =>
                   replyIndex === action.payload.replyIndex
-                    ? { ...reply, reply: action.payload.newReply }
+                    ? { ...reply, comment: action.payload.newReply }
                     : reply
                 ),
               }
