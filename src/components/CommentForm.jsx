@@ -10,7 +10,7 @@ function CommentForm({ onSubmit }) {
       alert("Both name and comment are required.");
       return;
     }
-    onSubmit({ name, comment });
+    onSubmit({ name, comment, id: Date.now() });
   };
 
   return (

@@ -3,17 +3,17 @@ import { MdDelete } from "react-icons/md";
 import Reply from "./Reply";
 import { useDispatch } from "react-redux";
 
-function Comment({ name, index, comment, date, replies, onReply, onDelete }) {
+function Comment({ comment, onReply, onDelete, index }) {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
-  const [newComment, setNewComment] = useState(comment);
+  const [newComment, setNewComment] = useState(comment.comment);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyName, setReplyName] = useState("");
   const [replyComment, setReplyComment] = useState("");
 
   const handleEdit = () => {
     if (isEditing) {
-      dispatch({ type: 'EDIT_COMMENT', payload: { index, newComment } });
+      dispatch({ type: "EDIT_COMMENT", payload: { index, newComment } });
     }
     setIsEditing(!isEditing);
   };
@@ -42,20 +42,10 @@ function Comment({ name, index, comment, date, replies, onReply, onDelete }) {
       <div className="border px-4 py-1 mb-2 bg-gray-100 relative rounded-sm">
         <div className="flex justify-between">
           <div>
-            <strong>{name}</strong>
-            <p>
-              {isEditing ? (
-                <input
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  className="border p-2 w-full"
-                />
-              ) : (
-                newComment
-              )}
-            </p>
+            <strong>{comment.name}</strong>
+            <p>{comment.comment}</p>
           </div>
-          <div className="text-gray-500 text-sm">{date}</div>
+          <div className="text-gray-500 text-sm">{comment.date}</div>
         </div>
         <button
           className="text-blue-500 font-semibold"
@@ -109,8 +99,8 @@ function Comment({ name, index, comment, date, replies, onReply, onDelete }) {
       )}
 
       {/* Display Replies */}
-      {replies &&
-        replies.map((reply, replyIndex) => (
+      {comment?.replies &&
+        comment?.replies.map((reply, replyIndex) => (
           <Reply
             key={index}
             replyIndex={replyIndex}
@@ -118,7 +108,7 @@ function Comment({ name, index, comment, date, replies, onReply, onDelete }) {
             name={reply.name}
             reply={reply.comment}
             date={reply.date}
-            onDelete={() => onDelete(reply, true, index)}
+            onDelete={() => onDelete(comment.id, replyIndex)}
           />
         ))}
     </div>
